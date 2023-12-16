@@ -35,6 +35,7 @@ const deleteItinerary = async (event_id) => {
 };
 
 module.exports = {
+    getAllItineraries,
     getItineraryById,
     addItinerary,
     updateItinerary,

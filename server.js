@@ -45,7 +45,7 @@ app.use(cors());
 app.use('/api/search', searchRoutes);
 app.use('/api/trips', tripRoutes);
 app.use('/api/expenses', expenseRoutes);
-app.use('/api/', itineraryRoutes);
+app.use('/api/itinerary', itineraryRoutes);
 app.use('/api/media', mediaRoutes);
 
 // Error handling middleware
