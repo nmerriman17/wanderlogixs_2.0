@@ -48,7 +48,7 @@ const TripCard = ({ trip, onEdit, onDelete }) => {
     );
 };
 
-const TripsForm = () => {
+const Trip = () => {
     const [trips, setTrips] = useState([]);
     const [editingTrip, setEditingTrip] = useState(null);
 
@@ -172,4 +172,4 @@ const TripsForm = () => {
     );
 };
 
-export default TripsForm;
+export default Trip;

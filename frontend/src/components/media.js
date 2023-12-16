@@ -39,7 +39,7 @@ const MediaCard = ({ media, index }) => {
     );
 };
 
-const AppMedia = () => {
+const Media = () => {
     const [mediaEntries, setMediaEntries] = useState([]);
     const formikRef = useRef();
 
@@ -130,4 +130,4 @@ const AppMedia = () => {
     );
 };
 
-export default AppMedia;
+export default Media;
