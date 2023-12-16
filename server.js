@@ -42,10 +42,11 @@ app.use(express.json());
 app.use(cors());
 
 // API Routes
-app.use('/api', searchRoutes);
+app.use('/api/search', searchRoutes);
 app.use('/api/trips', tripRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/itinerary', itineraryRoutes);
+app.use('/api', itineraryRoutes);
 app.use('/api/media', mediaRoutes);
 
 // Error handling middleware

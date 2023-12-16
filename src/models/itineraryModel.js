@@ -5,8 +5,8 @@ const getAllItineraries = async () => {
     return result.rows;
 };
 
-const getItineraryById = async (eventId) => {
-    const result = await pool.query('SELECT * FROM itinerary WHERE event_id = $1', [eventId]);
+const getItineraryById = async (event_id) => {
+    const result = await pool.query('SELECT * FROM itinerary WHERE event_id = $1', [event_id]);
     return result.rows[0];
 };
 
@@ -19,19 +19,19 @@ const addItinerary = async (itineraryData) => {
     return result.rows[0];
 };
 
-const updateItinerary = async (eventId, itineraryData) => {
+const updateItinerary = async (event_id, itineraryData) => {
     const { eventName, location, startDate, endDate, startTime, endTime, description, notification } = itineraryData;
     const result = await pool.query(
         'UPDATE itinerary SET eventName = $1, location = $2, startDate = $3, endDate = $4, startTime = $5, endTime = $6, description = $7, notification = $8 WHERE id = $9 RETURNING *',
-        [eventName, location, startDate, endDate, startTime, endTime, description, notification, eventId]
+        [eventName, location, startDate, endDate, startTime, endTime, description, notification, event_id]
     );
     return result.rows[0];
 };
 
-const deleteItinerary = async (eventId) => {
+const deleteItinerary = async (event_id) => {
     // Optionally fetch the itinerary before deleting
-    const itinerary = await pool.query('SELECT * FROM itinerary WHERE id = $1', [eventId]);
-    await pool.query('DELETE FROM itinerary WHERE id = $1', [eventId]);
+    const itinerary = await pool.query('SELECT * FROM itinerary WHERE id = $1', [event_id]);
+    await pool.query('DELETE FROM itinerary WHERE id = $1', [event_id]);
     return itinerary.rows[0]; 
 };
 
