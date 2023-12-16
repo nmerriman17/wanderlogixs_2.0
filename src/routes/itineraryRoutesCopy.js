@@ -5,16 +5,16 @@ const itineraryController = require('../controllers/itineraryController');
 // Get all itineraries
 router.get('/', itineraryController.getItineraries);
 
-// Get a single itinerary by event_id
-router.get('/:event_id', itineraryController.getItineraryById);
+// Get a single itinerary by ID
+router.get('/:id', itineraryController.getItineraryById);
 
 // Create a new itinerary
 router.post('/', itineraryController.createItinerary);
 
 // Update an itinerary
-router.put('/:event_id', itineraryController.updateItinerary);
+router.put('/:id', itineraryController.updateItinerary);
 
 // Delete an itinerary
-router.delete('/:event_id', itineraryController.deleteItinerary);
+router.delete('/:id', itineraryController.deleteItinerary);
 
 module.exports = router;

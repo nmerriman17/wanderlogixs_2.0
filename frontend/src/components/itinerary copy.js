@@ -36,15 +36,18 @@ function Itinerary() {
         async function fetchEvents() {
             try {
                 const response = await fetch('/api/itinerary', { method: 'GET' });
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
+
                 const data = await response.json();
                 setEvents(data);
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
         }
+
         fetchEvents();
     }, []);
 
@@ -53,10 +56,33 @@ function Itinerary() {
         setEventForm({ ...eventForm, [name]: value });
     };
 
+    const formatDateValue = (date) => {
+        if (!date) return '';
+        let d = new Date(date);
+        d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); // Adjust for timezone
+        let month = ('0' + (d.getMonth() + 1)).slice(-2);
+        let day = ('0' + d.getDate()).slice(-2);
+        let year = d.getFullYear();
+        return `${year}-${month}-${day}`;
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await itinerarySchema.validate(eventForm, { abortEarly: false });
+            const validatedData = await itinerarySchema.validate(eventForm, { abortEarly: false });
+
+            const requestBody = {
+                eventName: validatedData.eventName,
+                location: validatedData.location,
+                startDate: formatDateValue(validatedData.startDate),
+                endDate: formatDateValue(validatedData.endDate),
+                startTime: validatedData.startTime,
+                endTime: validatedData.endTime,
+                description: validatedData.description,
+                notification: validatedData.notification
+            };
+
             const method = editingEventId ? 'PUT' : 'POST';
             const endpoint = editingEventId ? `/api/itinerary/${editingEventId}` : '/api/itinerary';
 
@@ -65,7 +91,7 @@ function Itinerary() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(eventForm)
+                body: JSON.stringify(requestBody)
             });
 
             if (!response.ok) {
@@ -74,7 +100,7 @@ function Itinerary() {
 
             const updatedEvent = await response.json();
             if (editingEventId) {
-                setEvents(events.map(event => event.event_id === editingEventId ? updatedEvent : event));
+                setEvents(events.map(event => event.id === editingEventId ? updatedEvent : event));
             } else {
                 setEvents([...events, updatedEvent]);
             }
@@ -102,12 +128,12 @@ function Itinerary() {
     };
 
     const handleEditEvent = (event) => {
-        setEditingEventId(event.event_id);
+        setEditingEventId(event.id);
         setEventForm({
             eventName: event.eventName,
             location: event.location,
-            startDate: event.startDate,
-            endDate: event.endDate,
+            startDate: formatDateValue(event.startDate),
+            endDate: formatDateValue(event.endDate),
             startTime: event.startTime,
             endTime: event.endTime,
             description: event.description,
@@ -116,8 +142,7 @@ function Itinerary() {
     };
 
     const handleDateChange = (date, name) => {
-        const formattedDate = date.toISOString().split('T')[0];
-        setEventForm({ ...eventForm, [name]: formattedDate });
+        setEventForm({ ...eventForm, [name]: formatDateValue(date) });
     };
 
     return (
@@ -161,8 +186,8 @@ function Itinerary() {
                             <input
                                 type="date"
                                 name="startDate"
-                                value={eventForm.startDate}
-                                onChange={handleInputChange}
+                                value={formatDateValue(eventForm.startDate)}
+                                onChange={(e) => handleInputChange(e)}
                                 placeholder="Start Date"
                             />
                             {errors.startDate && <div className="error">{errors.startDate}</div>}
@@ -184,8 +209,8 @@ function Itinerary() {
                             <input
                                 type="date"
                                 name="endDate"
-                                value={eventForm.endDate}
-                                onChange={handleInputChange}
+                                value={formatDateValue(eventForm.endDate)}
+                                onChange={(e) => handleInputChange(e)}
                                 placeholder="End Date"
                             />
                             {errors.endDate && <div className="error">{errors.endDate}</div>}
@@ -246,20 +271,19 @@ function Itinerary() {
                         onChange={date => handleDateChange(date, 'startDate')}
                         value={eventForm.startDate ? new Date(eventForm.startDate) : new Date()}
                         locale="en-US"
-                        tileContent={({ date, view }) => (
+                        tileContent={({ date, view }) =>
                             view === 'month' && events.map(event => {
-                                const eventStartDate = new Date(event.startDate);
-                                const eventEndDate = new Date(event.endDate);
+                                const eventStartDate = new Date(event.start_datetime.split('T')[0]);
+                                const eventEndDate = new Date(event.end_datetime.split('T')[0]);
                                 if (date >= eventStartDate && date <= eventEndDate) {
                                     return (
                                         <div key={event.event_id} onClick={() => handleEditEvent(event)}>
-                                            {event.eventName}
+                                            {event.event_name}
                                         </div>
                                     );
                                 }
                                 return null;
-                            })
-                        )}
+                            })}
                     />
                 </div>
             </div>

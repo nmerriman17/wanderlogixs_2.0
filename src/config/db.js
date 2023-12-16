@@ -23,7 +23,6 @@ if (process.env.NODE_ENV === 'production') {
 
 const pool = new Pool(poolConfig);
 
-// Function for full-text search in the database
 const searchDatabase = async (term) => {
     try {
         const query = `
