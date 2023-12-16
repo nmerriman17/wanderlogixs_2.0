@@ -32,14 +32,11 @@ function Itinerary() {
     });
     const [errors, setErrors] = useState({});
 
-    const apiUrl = process.env.REACT_APP_API_URL || 'https://wanderlogixs-3ca36711a00d.herokuapp.com/';
 
     useEffect(() => {
         async function fetchEvents() {
             try {
-                const response = await fetch(`${apiUrl}/api/itinerary`, {
-                    method: 'GET'
-                });
+                const response = await fetch('/api/itinerary', { method: 'GET' });
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -53,7 +50,7 @@ function Itinerary() {
         }
 
         fetchEvents();
-    }, [apiUrl]);
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -84,7 +81,7 @@ function Itinerary() {
             };
 
             const method = editingEventId ? 'PUT' : 'POST';
-            const endpoint = editingEventId ? `${apiUrl}/api/itinerary/${editingEventId}` : `${apiUrl}/api/itinerary`;
+            const endpoint = editingEventId ? `/api/itinerary/${editingEventId}` : '/api/itinerary';
 
             const response = await fetch(endpoint, {
                 method,
