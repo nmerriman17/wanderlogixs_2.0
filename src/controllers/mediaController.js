@@ -1,9 +1,9 @@
-const MediaModel = require('../models/mediaModel.js'); 
+const mediaModel = require('../models/mediaModel.js'); 
 const { uploadFileToS3, deleteFileFromS3 } = require('../config/s3Upload.js');
 
 const getAllMedia = async (req, res) => {
     try {
-        const mediaItems = await MediaModel.getAllMedia();
+        const mediaItems = await mediaModel.getAllMedia();
         res.json(mediaItems);
     } catch (error) {
         res.status(500).send(error.message);
@@ -13,7 +13,7 @@ const getAllMedia = async (req, res) => {
 const getMediaById = async (req, res) => {
     try {
         const mediaId = req.params.id;
-        const mediaItem = await MediaModel.getMediaById(mediaId);
+        const mediaItem = await mediaModel.getMediaById(mediaId);
         if (!mediaItem) {
             return res.status(404).send('Media not found');
         }
@@ -34,7 +34,7 @@ const uploadMedia = async (req, res) => {
 
         const { tripname, tags, notes } = req.body;
         const mediaData = { tripname, tags, notes, url: mediaUrl, fileKey };
-        const newMedia = await MediaModel.addMedia(mediaData);
+        const newMedia = await mediaModel.addMedia(mediaData);
         res.status(201).json(newMedia);
     } catch (error) {
         res.status(500).send('Error uploading media');
@@ -44,10 +44,10 @@ const uploadMedia = async (req, res) => {
 const deleteMedia = async (req, res) => {
     try {
         const mediaId = req.params.id;
-        const mediaItem = await MediaModel.getMediaById(mediaId);
+        const mediaItem = await mediaModel.getMediaById(mediaId);
         if (mediaItem) {
             await deleteFileFromS3(mediaItem.fileKey);
-            await MediaModel.deleteMedia(mediaId);
+            await mediaModel.deleteMedia(mediaId);
             res.send('Media deleted successfully');
         } else {
             res.status(404).send('Media not found');

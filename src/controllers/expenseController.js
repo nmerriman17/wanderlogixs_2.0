@@ -1,4 +1,4 @@
-const ExpenseModel = require('../models/expenseModel.js');
+const expenseModel = require('../models/expenseModel.js');
 
 const sendErrorResponse = (res, error) => {
     if (error.name === 'ValidationError') {
@@ -10,7 +10,7 @@ const sendErrorResponse = (res, error) => {
 
 const getExpenses = async (req, res) => {
     try {
-        const expenses = await ExpenseModel.getAllExpenses();
+        const expenses = await expenseModel.getAllExpenses();
         res.json(expenses);
     } catch (error) {
         sendErrorResponse(res, error);
@@ -20,7 +20,7 @@ const getExpenses = async (req, res) => {
 const getExpenseById = async (req, res) => {
     try {
         const expenseId = req.params.expense_id; 
-        const expense = await ExpenseModel.getExpenseById(expenseId);
+        const expense = await expenseModel.getExpenseById(expenseId);
         if (expense) {
             res.json(expense);
         } else {
@@ -33,7 +33,7 @@ const getExpenseById = async (req, res) => {
 
 const createExpense = async (req, res) => {
     try {
-        const newExpense = await ExpenseModel.addExpense(req.body);
+        const newExpense = await expenseModel.addExpense(req.body);
         res.status(201).json(newExpense);
     } catch (error) {
         sendErrorResponse(res, error);
@@ -43,7 +43,7 @@ const createExpense = async (req, res) => {
 const updateExpense = async (req, res) => {
     try {
         const expenseId = req.params.expense_id;
-        const updatedExpense = await ExpenseModel.updateExpense(expenseId, req.body);
+        const updatedExpense = await expenseModel.updateExpense(expenseId, req.body);
         if (updatedExpense) {
             res.json(updatedExpense);
         } else {
@@ -57,7 +57,7 @@ const updateExpense = async (req, res) => {
 const deleteExpense = async (req, res) => {
     try {
         const expenseId = req.params.expense_id;
-        const deletedExpense = await ExpenseModel.deleteExpense(expenseId);
+        const deletedExpense = await expenseModel.deleteExpense(expenseId);
         if (deletedExpense) {
             res.json({ message: 'Expense successfully deleted' });
         } else {
