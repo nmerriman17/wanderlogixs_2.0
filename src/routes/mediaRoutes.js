@@ -3,6 +3,7 @@ const multer = require('multer');
 const { body } = require('express-validator');
 const MediaController = require('../controllers/mediaController.js');
 
+
 const router = express.Router();
 
 // Setup multer for file upload with a limit of 100MB
@@ -14,7 +15,7 @@ router.get('/:id', MediaController.getMediaById);
 
 router.post(
   '/',
-  upload.single('file'),
+  upload.single('media'),
   [body('tripname').notEmpty(), body('tags').optional().isArray()],
   MediaController.uploadMedia
 );

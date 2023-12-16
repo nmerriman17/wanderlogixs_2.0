@@ -17,6 +17,8 @@ function App() {
           <Route path="/trips" element={<AppTrip />} />
           <Route path="/expenses" element={<AppExpenses />} />
           <Route path="/media" element={<AppMedia />} />
+          <Route path="/itinerary" element={<AppItinerary />} />  {/* Redirect root path to Itinerary */}
+
         </Routes>
       </Router>
     </div>
