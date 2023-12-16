@@ -1,6 +1,6 @@
 const pool = require('../config/db'); 
 
-const getAllItineraries = async () => {
+const getAllItinerary = async () => {
     const result = await pool.query('SELECT * FROM itinerary');
     return result.rows;
 };
@@ -38,7 +38,7 @@ const deleteItinerary = async (itineraryId) => {
 };
 
 module.exports = {
-    getAllItineraries,
+    getAllItinerary,
     getItineraryById,
     addItinerary,
     updateItinerary,

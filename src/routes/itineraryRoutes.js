@@ -3,7 +3,7 @@ const router = express.Router();
 const itineraryController = require('../controllers/itineraryController');
 
 // Get all itineraries
-router.get('/', itineraryController.getItineraries);
+router.get('/', itineraryController.getItinerary);
 
 // Get a single itinerary by ID
 router.get('/:id', itineraryController.getItineraryById);
