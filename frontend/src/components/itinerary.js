@@ -59,14 +59,13 @@ function Itinerary() {
     const formatDateValue = (date) => {
         if (!date) return '';
         let d = new Date(date);
-        d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); // Adjust for local timezone
         let month = '' + (d.getMonth() + 1);
         let day = '' + d.getDate();
         let year = d.getFullYear();
-    
-        if (month.length) month = '0' + month;
-        if (day.length) day = '0' + day;
-    
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
         return [year, month, day].join('-');
     };
 
@@ -74,10 +73,17 @@ function Itinerary() {
         e.preventDefault();
         try {
             const validatedData = await itinerarySchema.validate(eventForm, { abortEarly: false });
-            const eventData = {
-                ...validatedData,
-                startDate: eventForm.startDate,
-                endDate: eventForm.endDate
+
+            // Build the request body
+            const requestBody = {
+                eventName: validatedData.eventName,
+                location: validatedData.location,
+                startDate: formatDateValue(validatedData.startDate),
+                endDate: formatDateValue(validatedData.endDate),
+                startTime: validatedData.startTime,
+                endTime: validatedData.endTime,
+                description: validatedData.description,
+                notification: validatedData.notification
             };
 
             const method = editingEventId ? 'PUT' : 'POST';
@@ -88,7 +94,7 @@ function Itinerary() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(eventData)
+                body: JSON.stringify(requestBody)
             });
 
             if (!response.ok) {
@@ -97,7 +103,7 @@ function Itinerary() {
 
             const updatedEvent = await response.json();
             if (editingEventId) {
-                setEvents(events.map(event => event.id === editingEventId ? updatedEvent : event)); // Updated to use 'id' instead of 'event_id'
+                setEvents(events.map(event => event.id === editingEventId ? updatedEvent : event));
             } else {
                 setEvents([...events, updatedEvent]);
             }
@@ -108,6 +114,7 @@ function Itinerary() {
             setErrors({ form: 'Error submitting form' });
         }
     };
+
 
     const resetForm = () => {
         setEventForm({
@@ -125,22 +132,23 @@ function Itinerary() {
     };
 
     const handleEditEvent = (event) => {
-        setEditingEventId(event.id); // Updated to use 'id' instead of 'event_id'
+        setEditingEventId(event.id);
         setEventForm({
-            eventName: event.eventName, // Updated to use 'eventName' instead of 'event_name'
+            eventName: event.eventName,
             location: event.location,
-            startDate: formatDateValue(event.startDate), // Assuming 'startDate' is stored in ISO format in your database
-            endDate: formatDateValue(event.endDate), // Assuming 'endDate' is stored in ISO format in your database
-            startTime: event.startTime.substring(0, 5), // Assuming 'startTime' is stored in ISO format in your database
-            endTime: event.endTime.substring(0, 5), // Assuming 'endTime' is stored in ISO format in your database
+            startDate: formatDateValue(event.startDate),
+            endDate: formatDateValue(event.endDate),
+            startTime: event.startTime,
+            endTime: event.endTime,
             description: event.description,
             notification: event.notification
         });
     };
 
     const handleDateChange = (date, name) => {
-        setEventForm({ ...eventForm, [name]: formatDateValue(date.toISOString()) });
+        setEventForm({ ...eventForm, [name]: formatDateValue(date) });
     };
+
 
     return (
         <>
