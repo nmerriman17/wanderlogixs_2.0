@@ -32,7 +32,6 @@ function Itinerary() {
     });
     const [errors, setErrors] = useState({});
 
-
     useEffect(() => {
         async function fetchEvents() {
             try {
@@ -97,7 +96,7 @@ function Itinerary() {
 
             const updatedEvent = await response.json();
             if (editingEventId) {
-                setEvents(events.map(event => event.event_id === editingEventId ? updatedEvent : event));
+                setEvents(events.map(event => event.id === editingEventId ? updatedEvent : event)); // Updated to use 'id' instead of 'event_id'
             } else {
                 setEvents([...events, updatedEvent]);
             }
@@ -125,14 +124,14 @@ function Itinerary() {
     };
 
     const handleEditEvent = (event) => {
-        setEditingEventId(event.event_id);
+        setEditingEventId(event.id); // Updated to use 'id' instead of 'event_id'
         setEventForm({
-            eventName: event.event_name,
+            eventName: event.eventName, // Updated to use 'eventName' instead of 'event_name'
             location: event.location,
-            startDate: event.start_datetime.split('T')[0],
-            endDate: event.end_datetime.split('T')[0],
-            startTime: event.start_datetime.split('T')[1].substring(0, 5),
-            endTime: event.end_datetime.split('T')[1].substring(0, 5),
+            startDate: formatDateValue(event.startDate), // Assuming 'startDate' is stored in ISO format in your database
+            endDate: formatDateValue(event.endDate), // Assuming 'endDate' is stored in ISO format in your database
+            startTime: event.startTime.substring(0, 5), // Assuming 'startTime' is stored in ISO format in your database
+            endTime: event.endTime.substring(0, 5), // Assuming 'endTime' is stored in ISO format in your database
             description: event.description,
             notification: event.notification
         });

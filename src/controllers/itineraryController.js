@@ -1,8 +1,8 @@
 const itineraryModel = require('../models/itineraryModel.js');
 
-const getItinerary = async (req, res) => {
+const getItineraries = async (req, res) => {
     try {
-        const itinerary = await itineraryModel.getAllItinerary();
+        const itinerary = await itineraryModel.getAllItineraries();
         res.json(itinerary);
     } catch (error) {
         res.status(500).send(error.message);
@@ -55,7 +55,7 @@ const deleteItinerary = async (req, res) => {
 };
 
 module.exports = {
-    getItinerary,
+    getItineraries,
     getItineraryById,
     createItinerary,
     updateItinerary,
