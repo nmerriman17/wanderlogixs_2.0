@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const { body } = require('express-validator');
-const MediaController = require('../controllers/mediaController.js');
+const mediaController = require('../controllers/mediaController');
 
 
 const router = express.Router();
@@ -10,16 +10,16 @@ const router = express.Router();
 const upload = multer({ dest: 'uploads/', limits: { fileSize: 100000000 } });
 
 // Routes definition
-router.get('/', MediaController.getAllMedia);
-router.get('/:id', MediaController.getMediaById);
+router.get('/', mediaController.getAllMedia);
+router.get('/:id', mediaController.getMediaById);
 
 router.post(
   '/',
   upload.single('media'),
   [body('tripname').notEmpty(), body('tags').optional().isArray()],
-  MediaController.uploadMedia
+  mediaController.uploadMedia
 );
 
-router.delete('/:id', MediaController.deleteMedia);
+router.delete('/:id', mediaController.deleteMedia);
 
 module.exports = router;

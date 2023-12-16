@@ -1,5 +1,5 @@
-const TripModel = require('../models/tripModel.js');
-const { uploadFileToS3, deleteFileFromS3 } = require('../config/s3Upload.js');
+const tripModel = require('../models/tripModel');
+const { uploadFileToS3, deleteFileFromS3 } = require('../config/s3Upload');
 
 exports.getTrips = async (req, res) => {
     try {

@@ -1,5 +1,5 @@
-const mediaModel = require('../models/mediaModel.js'); 
-const { uploadFileToS3, deleteFileFromS3 } = require('../config/s3Upload.js');
+const mediaModel = require('../models/mediaModel'); 
+const { uploadFileToS3, deleteFileFromS3 } = require('../config/s3Upload');
 
 const getAllMedia = async (req, res) => {
     try {
