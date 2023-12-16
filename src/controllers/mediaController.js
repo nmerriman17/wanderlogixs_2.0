@@ -12,7 +12,7 @@ const getAllMedia = async (req, res) => {
 
 const getMediaById = async (req, res) => {
     try {
-        const mediaId = req.params.id;
+        const mediaId = req.params.media_id;
         const mediaItem = await mediaModel.getMediaById(mediaId);
         if (!mediaItem) {
             return res.status(404).send('Media not found');
@@ -43,7 +43,7 @@ const uploadMedia = async (req, res) => {
 
 const deleteMedia = async (req, res) => {
     try {
-        const mediaId = req.params.id;
+        const mediaId = req.params.media_id;
         const mediaItem = await mediaModel.getMediaById(mediaId);
         if (mediaItem) {
             await deleteFileFromS3(mediaItem.fileKey);

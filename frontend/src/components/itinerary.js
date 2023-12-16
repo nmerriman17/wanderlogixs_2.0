@@ -59,12 +59,13 @@ function Itinerary() {
     const formatDateValue = (date) => {
         if (!date) return '';
         let d = new Date(date);
+        d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); // Adjust for timezone
         let month = ('0' + (d.getMonth() + 1)).slice(-2);
         let day = ('0' + d.getDate()).slice(-2);
         let year = d.getFullYear();
-
         return `${year}-${month}-${day}`;
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();

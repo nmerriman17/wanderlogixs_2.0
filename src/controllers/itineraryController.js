@@ -11,7 +11,7 @@ const getItineraries = async (req, res) => {
 
 const getItineraryById = async (req, res) => {
     try {
-        const itinerary = await itineraryModel.getItineraryById(req.params.id);
+        const itinerary = await itineraryModel.getItineraryById(req.params.event_id);
         if (!itinerary) {
             return res.status(404).send('Itinerary not found');
         }
@@ -32,7 +32,7 @@ const createItinerary = async (req, res) => {
 
 const updateItinerary = async (req, res) => {
     try {
-        const updatedItinerary = await itineraryModel.updateItinerary(req.params.id, req.body);
+        const updatedItinerary = await itineraryModel.updateItinerary(req.params.event_id, req.body);
         if (!updatedItinerary) {
             return res.status(404).send('Itinerary not found');
         }
@@ -44,7 +44,7 @@ const updateItinerary = async (req, res) => {
 
 const deleteItinerary = async (req, res) => {
     try {
-        const deletedItinerary = await itineraryModel.deleteItinerary(req.params.id);
+        const deletedItinerary = await itineraryModel.deleteItinerary(req.params.event_id);
         if (!deletedItinerary) {
             return res.status(404).send('Itinerary not found');
         }

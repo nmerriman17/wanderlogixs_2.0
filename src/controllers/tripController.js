@@ -12,7 +12,7 @@ exports.getTrips = async (req, res) => {
 
 exports.getTrip = async (req, res) => {
     try {
-        const trip = await tripModel.getTripById(req.params.id);
+        const trip = await tripModel.getTripById(req.params.trip_id);
         trip ? res.json(trip) : res.status(404).send('Trip not found');
     } catch (error) {
         res.status(500).send('Internal Server Error');
@@ -40,13 +40,13 @@ exports.updateTrip = async (req, res) => {
             const uploadResult = await uploadFileToS3(req.file);
             fileKey = uploadResult.fileKey;
 
-            const oldTrip = await tripModel.getTripById(req.params.id);
+            const oldTrip = await tripModel.getTripById(req.params.trip_id);
             if (oldTrip && oldTrip.file_key) {
                 await deleteFileFromS3(oldTrip.file_key);
             }
         }
 
-        const updatedTrip = await tripModel.updateTrip(req.params.id, { ...req.body, file_key: fileKey });
+        const updatedTrip = await tripModel.updateTrip(req.params.trip_id, { ...req.body, file_key: fileKey });
         updatedTrip ? res.json(updatedTrip) : res.status(404).send('Trip not found');
     } catch (error) {
         res.status(500).send('Internal Server Error');
@@ -55,7 +55,7 @@ exports.updateTrip = async (req, res) => {
 
 exports.deleteTrip = async (req, res) => {
     try {
-        const deletedTrip = await tripModel.deleteTrip(req.params.id);
+        const deletedTrip = await tripModel.deleteTrip(req.params.trip_id);
         deletedTrip ? res.json(deletedTrip) : res.status(404).send('Trip not found');
     } catch (error) {
         res.status(500).send('Internal Server Error');

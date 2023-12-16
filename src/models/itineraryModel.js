@@ -22,16 +22,15 @@ const addItinerary = async (itineraryData) => {
 const updateItinerary = async (event_id, itineraryData) => {
     const { eventName, location, startDate, endDate, startTime, endTime, description, notification } = itineraryData;
     const result = await pool.query(
-        'UPDATE itinerary SET eventName = $1, location = $2, startDate = $3, endDate = $4, startTime = $5, endTime = $6, description = $7, notification = $8 WHERE id = $9 RETURNING *',
+        'UPDATE itinerary SET eventName = $1, location = $2, startDate = $3, endDate = $4, startTime = $5, endTime = $6, description = $7, notification = $8 WHERE event_id = $9 RETURNING *',
         [eventName, location, startDate, endDate, startTime, endTime, description, notification, event_id]
     );
     return result.rows[0];
 };
 
 const deleteItinerary = async (event_id) => {
-    // Optionally fetch the itinerary before deleting
-    const itinerary = await pool.query('SELECT * FROM itinerary WHERE id = $1', [event_id]);
-    await pool.query('DELETE FROM itinerary WHERE id = $1', [event_id]);
+    const itinerary = await pool.query('SELECT * FROM itinerary WHERE event_id = $1', [event_id]);
+    await pool.query('DELETE FROM itinerary WHERE event_id = $1', [event_id]);
     return itinerary.rows[0]; 
 };
 
