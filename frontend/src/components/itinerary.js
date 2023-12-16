@@ -59,13 +59,14 @@ function Itinerary() {
     const formatDateValue = (date) => {
         if (!date) return '';
         let d = new Date(date);
+        d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); // Adjust for local timezone
         let month = '' + (d.getMonth() + 1);
         let day = '' + d.getDate();
         let year = d.getFullYear();
-
+    
         if (month.length < 2) month = '0' + month;
         if (day.length < 2) day = '0' + day;
-
+    
         return [year, month, day].join('-');
     };
 
@@ -138,7 +139,7 @@ function Itinerary() {
     };
 
     const handleDateChange = (date, name) => {
-        setEventForm({ ...eventForm, [name]: formatDateValue(date) });
+        setEventForm({ ...eventForm, [name]: formatDateValue(date.toISOString()) });
     };
 
     return (
@@ -266,6 +267,7 @@ function Itinerary() {
                     <Calendar
                         onChange={date => handleDateChange(date, 'startDate')}
                         value={eventForm.startDate ? new Date(eventForm.startDate) : new Date()}
+                        locale="en-US"
                         tileContent={({ date, view }) =>
                             view === 'month' && events.map(event => {
                                 const eventStartDate = new Date(event.start_datetime.split('T')[0]);
