@@ -32,14 +32,12 @@ function Itinerary() {
     });
     const [errors, setErrors] = useState({});
 
-    const apiUrl = 'https://wanderlogixs-3ca36711a00d.herokuapp.com/';
-
+    const apiUrl = process.env.REACT_APP_API_URL || 'https://wanderlogixs-3ca36711a00d.herokuapp.com/';
 
     useEffect(() => {
-        const fetchEvents = async () => {
+        async function fetchEvents() {
             try {
-                console.log('API URL:', process.env.REACT_APP_API_URL);
-                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/itinerary`, {
+                const response = await fetch(`${apiUrl}/api/itinerary`, {
                     method: 'GET'
                 });
 
@@ -52,10 +50,10 @@ function Itinerary() {
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
-        };
+        }
 
         fetchEvents();
-    }, []);
+    }, [apiUrl]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -86,7 +84,7 @@ function Itinerary() {
             };
 
             const method = editingEventId ? 'PUT' : 'POST';
-            const endpoint = editingEventId ? `${process.env.REACT_APP_API_URL}/api/itinerary/${editingEventId}` : `${process.env.REACT_APP_API_URL}/api/itinerary`;
+            const endpoint = editingEventId ? `${apiUrl}/api/itinerary/${editingEventId}` : `${apiUrl}/api/itinerary`;
 
             const response = await fetch(endpoint, {
                 method,
