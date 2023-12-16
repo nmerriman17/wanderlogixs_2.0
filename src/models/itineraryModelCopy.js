@@ -1,4 +1,4 @@
-const pool = require('../config/db'); 
+const { pool } = require('../config/db'); 
 
 const getAllItineraries = async () => {
     const result = await pool.query('SELECT * FROM itinerary');
@@ -13,7 +13,7 @@ const getItineraryById = async (event_id) => {
 const addItinerary = async (itineraryData) => {
     const { eventName, location, startDate, endDate, startTime, endTime, description, notification } = itineraryData;
     const result = await pool.query(
-        'INSERT INTO itinerary (eventName, location, startDate, endDate, startTime, endTime, description, notification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+        'INSERT INTO itinerary (event_name, location, start_date, end_date, start_time, end_time, description, notification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
         [eventName, location, startDate, endDate, startTime, endTime, description, notification]
     );
     return result.rows[0];
@@ -22,7 +22,7 @@ const addItinerary = async (itineraryData) => {
 const updateItinerary = async (event_id, itineraryData) => {
     const { eventName, location, startDate, endDate, startTime, endTime, description, notification } = itineraryData;
     const result = await pool.query(
-        'UPDATE itinerary SET eventName = $1, location = $2, startDate = $3, endDate = $4, startTime = $5, endTime = $6, description = $7, notification = $8 WHERE event_id = $9 RETURNING *',
+        'UPDATE itinerary SET event_name = $1, location = $2, start_date = $3, end_date = $4, start_time = $5, end_time = $6, description = $7, notification = $8 WHERE event_id = $9 RETURNING *',
         [eventName, location, startDate, endDate, startTime, endTime, description, notification, event_id]
     );
     return result.rows[0];
