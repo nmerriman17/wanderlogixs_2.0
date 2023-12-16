@@ -47,7 +47,7 @@ export default function AppHeader() {
                     <Navbar.Brand className="d-flex align-items-center header-light-blue-logo text">
                         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
                             <img src={logoImage} alt="Logo" style={{ maxWidth: '100px', marginRight: '10px' }} />
-                            WanderLogixs
+                            <div class="brand-name">WanderLogixs</div>
                         </Link>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />

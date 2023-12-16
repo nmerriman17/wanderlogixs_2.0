@@ -48,3 +48,11 @@
     text-decoration-color: #A6530A;
     text-decoration-thickness: 2px;
 }
+
+.brand-name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; 
+    font-size: 24px; 
+    color:#7794A6;
+}
+
