@@ -9,8 +9,8 @@ import './itinerary.css';
 const itinerarySchema = yup.object().shape({
     eventName: yup.string().required('Event name is required'),
     location: yup.string().required('Location is required'),
-    startDate: yup.date().required('Start date is required').max(yup.ref('endDate'), 'Start date must be before end date'),
-    endDate: yup.date().required('End date is required').min(yup.ref('startDate'), 'End date must be after start date'),
+    startDate: yup.date().required('Start date is required').nullable(),
+    endDate: yup.date().required('End date is required').nullable(),
     startTime: yup.string().required('Start time is required'),
     endTime: yup.string().required('End time is required'),
     description: yup.string(),
@@ -23,8 +23,8 @@ function Itinerary() {
     const [eventForm, setEventForm] = useState({
         eventName: '',
         location: '',
-        startDate: new Date(),
-        endDate: new Date(),
+        startDate: '',
+        endDate: '',
         startTime: '12:00',
         endTime: '12:00',
         description: '',
@@ -32,13 +32,17 @@ function Itinerary() {
     });
     const [errors, setErrors] = useState({});
 
+    const apiUrl = 'https://wanderlogixs-3ca36711a00d.herokuapp.com/';
+
+
     useEffect(() => {
         const fetchEvents = async () => {
             try {
+                console.log('API URL:', process.env.REACT_APP_API_URL);
                 const response = await fetch(`${process.env.REACT_APP_API_URL}/api/itinerary`, {
                     method: 'GET'
                 });
-                
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -59,11 +63,16 @@ function Itinerary() {
     };
 
     const formatDateValue = (date) => {
-        return date.toISOString().split('T')[0];
-    };
+        if (!date) return '';
+        let d = new Date(date);
+        let month = '' + (d.getMonth() + 1);
+        let day = '' + d.getDate();
+        let year = d.getFullYear();
 
-    const handleDateChange = (date, name) => {
-        setEventForm({ ...eventForm, [name]: date });
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
     };
 
     const handleSubmit = async (e) => {
@@ -72,8 +81,8 @@ function Itinerary() {
             const validatedData = await itinerarySchema.validate(eventForm, { abortEarly: false });
             const eventData = {
                 ...validatedData,
-                startDate: formatDateValue(validatedData.startDate),
-                endDate: formatDateValue(validatedData.endDate)
+                startDate: eventForm.startDate,
+                endDate: eventForm.endDate
             };
 
             const method = editingEventId ? 'PUT' : 'POST';
@@ -109,8 +118,8 @@ function Itinerary() {
         setEventForm({
             eventName: '',
             location: '',
-            startDate: new Date(),
-            endDate: new Date(),
+            startDate: '',
+            endDate: '',
             startTime: '12:00',
             endTime: '12:00',
             description: '',
@@ -125,8 +134,8 @@ function Itinerary() {
         setEventForm({
             eventName: event.event_name,
             location: event.location,
-            startDate: new Date(event.start_datetime),
-            endDate: new Date(event.end_datetime),
+            startDate: event.start_datetime.split('T')[0],
+            endDate: event.end_datetime.split('T')[0],
             startTime: event.start_datetime.split('T')[1].substring(0, 5),
             endTime: event.end_datetime.split('T')[1].substring(0, 5),
             description: event.description,
@@ -134,6 +143,9 @@ function Itinerary() {
         });
     };
 
+    const handleDateChange = (date, name) => {
+        setEventForm({ ...eventForm, [name]: formatDateValue(date) });
+    };
 
     return (
         <>
@@ -257,13 +269,13 @@ function Itinerary() {
 
                 {/* Calendar Component */}
                 <div className="calendar-container">
-                <Calendar
-                        onChange={handleDateChange}
-                        value={eventForm.startDate}
+                    <Calendar
+                        onChange={date => handleDateChange(date, 'startDate')}
+                        value={new Date(eventForm.startDate)}
                         tileContent={({ date, view }) =>
                             view === 'month' && events.map(event => {
-                                const eventStartDate = new Date(event.start_datetime);
-                                const eventEndDate = new Date(event.end_datetime);
+                                const eventStartDate = new Date(event.start_datetime.split('T')[0]);
+                                const eventEndDate = new Date(event.end_datetime.split('T')[0]);
                                 if (date >= eventStartDate && date <= eventEndDate) {
                                     return (
                                         <div key={event.event_id} onClick={() => handleEditEvent(event)}>
