@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import AppHeader from '../components/header.js';
 import './itinerary.css';
 
-// Define the schema for validation using yup
+// Schema for form validation using yup
 const itinerarySchema = yup.object().shape({
     eventName: yup.string().required('Event name is required'),
     location: yup.string().required('Location is required'),
@@ -187,7 +187,7 @@ function Itinerary() {
                                 type="date"
                                 name="startDate"
                                 value={formatDateValue(eventForm.startDate)}
-                                onChange={handleInputChange}
+                                onChange={(e) => handleInputChange(e)}
                                 placeholder="Start Date"
                             />
                             {errors.startDate && <div className="error">{errors.startDate}</div>}
@@ -210,7 +210,7 @@ function Itinerary() {
                                 type="date"
                                 name="endDate"
                                 value={formatDateValue(eventForm.endDate)}
-                                onChange={handleInputChange}
+                                onChange={(e) => handleInputChange(e)}
                                 placeholder="End Date"
                             />
                             {errors.endDate && <div className="error">{errors.endDate}</div>}
@@ -269,7 +269,7 @@ function Itinerary() {
                 <div className="calendar-container">
                     <Calendar
                         onChange={date => handleDateChange(date, 'startDate')}
-                        value={new Date(eventForm.startDate)}
+                        value={eventForm.startDate ? new Date(eventForm.startDate) : new Date()}
                         tileContent={({ date, view }) =>
                             view === 'month' && events.map(event => {
                                 const eventStartDate = new Date(event.start_datetime.split('T')[0]);
