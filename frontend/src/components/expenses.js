@@ -36,7 +36,7 @@ const ExpenseCard = ({ expense }) => {
   );
 }
 
-const AppExpenses = () => {
+const Expenses = () => {
   const [expenses, setExpenses] = useState([]);
 
   useEffect(() => {
@@ -101,4 +101,4 @@ const AppExpenses = () => {
   );
 };
 
-export default AppExpenses;
+export default Expenses;
