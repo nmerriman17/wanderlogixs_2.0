@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Navbar, Nav, Form, Button, Modal } from 'react-bootstrap'; // Make sure to import Nav here
+import { Container, Nav, Navbar, Form, Button, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './header.css';
 import logoImage from '../assets/images/logo-icon.png';
@@ -15,15 +15,20 @@ export default function AppHeader() {
 
     const handleSearchSubmit = async (event) => {
         event.preventDefault();
-        if (!searchTerm.trim()) return; // Avoid searching for empty string
-
         const apiUrl = `/api/search?term=${encodeURIComponent(searchTerm)}`;
     
         try {
-            const response = await fetch(apiUrl);
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
+    
             const data = await response.json();
             setSearchResults(data);
             setShowModal(true);
@@ -33,15 +38,18 @@ export default function AppHeader() {
         }
     };
     
+
     const handleCloseModal = () => setShowModal(false);
 
     return (
         <>
-            <Navbar bg="light" expand="lg">
+            <Navbar className="bg-body-tertiary" expand="lg">
                 <Container>
-                    <Navbar.Brand as={Link} to="/">
-                        <img src={logoImage} alt="Logo" className="logo-image" />
-                        WanderLogixs
+                    <Navbar.Brand className="d-flex align-items-center header-light-blue-logo text">
+                        <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+                            <img src={logoImage} alt="Logo" style={{ maxWidth: '100px', marginRight: '10px' }} />
+                            <div className="brand-name">WanderLogixs</div>
+                        </Link>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -51,15 +59,17 @@ export default function AppHeader() {
                             <Nav.Link as={Link} to="/itinerary">Itinerary</Nav.Link>
                             <Nav.Link as={Link} to="/media">Media</Nav.Link>
                         </Nav>
-                        <Form inline onSubmit={handleSearchSubmit} className="ms-auto">
+                        <Form className="d-flex ms-auto" onSubmit={handleSearchSubmit}>
                             <Form.Control
+                                name="search"
                                 type="search"
                                 placeholder="Search"
-                                className="mr-sm-2"
+                                className="me-2"
+                                aria-label="Search"
                                 value={searchTerm}
                                 onChange={handleSearchChange}
                             />
-                            <Button type="submit" variant="outline-success">Search</Button>
+                            <Button type="submit" className="rounded-button">Search</Button>
                         </Form>
                     </Navbar.Collapse>
                 </Container>
@@ -72,8 +82,8 @@ export default function AppHeader() {
                 <Modal.Body>
                     {searchResults.length > 0 ? (
                         <ul>
-                            {searchResults.map((result, index) => (
-                                <li key={index}>{result.eventName}</li> // Ensure the results have an eventName property
+                            {searchResults.map(result => (
+                                <li key={result.id}>{result.name}</li>
                             ))}
                         </ul>
                     ) : <p>No results found.</p>}
