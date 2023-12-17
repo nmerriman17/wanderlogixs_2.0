@@ -29,11 +29,7 @@ function Itinerary() {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
-            setEvents(data.map(event => ({
-                ...event,
-                startDate: new Date(event.startDate).toISOString().split('T')[0],
-                endDate: new Date(event.endDate).toISOString().split('T')[0]
-            })));
+            setEvents(data);
         } catch (error) {
             console.error('Error fetching events:', error);
         }
