@@ -44,11 +44,11 @@ const updateItinerary = async (req, res) => {
 
 const deleteItinerary = async (req, res) => {
     try {
-        const deletedItinerary = await itineraryModel.deleteItinerary(req.params.event_id);
-        if (!deletedItinerary) {
+        const result = await itineraryModel.deleteItinerary(req.params.event_id);
+        if (!result) {
             return res.status(404).send('Itinerary not found');
         }
-        res.json(deletedItinerary);
+        res.status(204).send(); // No content to send back
     } catch (error) {
         res.status(500).send(error.message);
     }

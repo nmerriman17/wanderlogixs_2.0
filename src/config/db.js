@@ -26,7 +26,7 @@ const pool = new Pool(poolConfig);
 const searchDatabase = async (term) => {
     try {
         const query = `
-            SELECT 'trips' as source, destination, startDate, endDate, purpose, notes
+            SELECT 'trips' as source, destination, start_date, end_date, purpose, notes
             FROM trips
             WHERE textsearchable_index_col @@ plainto_tsquery('english', $1)
             UNION ALL
@@ -34,11 +34,11 @@ const searchDatabase = async (term) => {
             FROM expenses
             WHERE textsearchable_index_col @@ plainto_tsquery('english', $1)
             UNION ALL
-            SELECT 'itinerary', eventName, location, startDate, endDate, description, startTime, endTime
+            SELECT 'itinerary', event_name, location, start_date, end_date, description, start_time, end_time
             FROM itinerary
             WHERE textsearchable_index_col @@ plainto_tsquery('english', $1)
             UNION ALL
-            SELECT 'media', media, tags, notes, tripName
+            SELECT 'media', media, tags, notes, trip_name
             FROM media
             WHERE textsearchable_index_col @@ plainto_tsquery('english', $1);
         `;
