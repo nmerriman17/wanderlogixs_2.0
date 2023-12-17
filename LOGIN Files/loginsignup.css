@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100vh;
+    background: linear-gradient(#2E454E, #7794A6);
+}
+
+.login-signup-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 100px;
+    width: 600px;
+    max-height: 120vh;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    margin-top: 30px;
+}
+
+.text {
+    color: #A6530A;
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.underline {
+    width: 61px;
+    height: 6px;
+    background: #A6530A;
+    border-radius: 9px;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 55px;
+}
+
+.input {
+    display: flex;
+    align-items: center;
+    margin: auto;
+    width: 480px;
+    height: 60px;
+    background: #ffffff;
+    border-radius: 6px;
+    border: 1px solid #cccccc;
+}
+
+.input input {
+    flex-grow: 1;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #797979;
+    font-size: 16px;
+    padding: 0 15px;
+}
+
+.submit-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    font-size: 19px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 13px 35px;
+    transition: background 0.3s linear, color 0.3s linear;
+}
+
+.btn-primary {
+    background: #A6530A;
+    color: white;
+}
+
+.btn-secondary {
+    background: #2E454E;
+    color: white;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+    background: #fff;
+    color: #A6530A;
+}
+
+.error-message {
+    color: #ca0e0e;
+    font-size: 18px;
+    padding-left: 60px;
+    margin-top: 10px;
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: space-around; /* Adjust as needed */
+    margin-top: 20px;
+}
+
+.btn-switch {
+    background: #f0f0f0; /* Light background for switch button */
+    color: #333; /* Dark text color */
+    border: 1px solid #ccc; /* Light border */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-switch:hover {
+    background: #e0e0e0; /* Slightly darker background on hover */
+}
