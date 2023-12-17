@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
 
-// Configure AWS with your access and secret key.
+// Configure AWS with access and secret key.
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -18,7 +18,7 @@ const uploadFileToS3 = async (file) => {
         Key: fileKey,
         Body: file.buffer,
         ContentType: file.mimetype, // Set the content type to ensure proper handling of the file in S3
-        ACL: 'public-read' // If you want the file to be publicly readable
+        ACL: 'public-read' 
     };
 
     try {

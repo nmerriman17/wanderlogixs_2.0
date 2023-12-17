@@ -14,7 +14,7 @@ const schema = yup.object().shape({
     tripName: yup.string().required('Trip name is required'),
     tags: yup.string(),
     notes: yup.string(),
-    media: yup.mixed(), // This can be refined based on your requirements
+    media: yup.mixed(), 
 });
 
 const MediaCard = ({ media, index }) => {
@@ -112,8 +112,8 @@ const Media = () => {
                       </div>
                     </div>
                     <div className="media-submit-container">
-                      <button type="submit" className="btn itinerary-btn-primary submit">Submit</button>
-                      <button type="button" className="btn itinerary-btn-secondary submit" onClick={() => formikRef.current?.resetForm()}>
+                    <button type="submit" className="btn media-btn-primary submit">Submit</button>
+                    <button type="submit" className="btn media-btn-secondary submit" onClick={() =>  formikRef.current?.resetForm()}>
                         Cancel
                       </button>
                     </div>

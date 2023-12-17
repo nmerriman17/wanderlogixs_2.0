@@ -1,5 +1,5 @@
 const express = require('express');
-const multer = require('multer'); // Add this import
+const multer = require('multer');
 const router = express.Router();
 const tripController = require('../controllers/tripController');
 
