@@ -1,4 +1,4 @@
-const pool = require('../config/db');
+const { pool } = require('../config/db');
 
 const getAllItineraries = async () => {
     const result = await pool.query('SELECT * FROM itinerary');
