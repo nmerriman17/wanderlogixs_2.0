@@ -23,22 +23,8 @@ const getItineraryById = async (req, res) => {
 
 const createItinerary = async (req, res) => {
     try {
-        console.log('Creating Itinerary:', req.body);
         const newItinerary = await itineraryModel.addItinerary(req.body);
         res.status(201).json(newItinerary);
-    } catch (error) {
-        console.error('Error creating itinerary:', error);
-        res.status(500).send(error.message);
-    }
-};
-
-const updateItinerary = async (req, res) => {
-    try {
-        const updatedItinerary = await itineraryModel.updateItinerary(req.params.event_id, req.body);
-        if (!updatedItinerary) {
-            return res.status(404).send('Itinerary not found');
-        }
-        res.json(updatedItinerary);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -46,11 +32,11 @@ const updateItinerary = async (req, res) => {
 
 const deleteItinerary = async (req, res) => {
     try {
-        const result = await itineraryModel.deleteItinerary(req.params.event_id);
-        if (!result) {
+        const deletedItinerary = await itineraryModel.deleteItinerary(req.params.event_id);
+        if (!deletedItinerary) {
             return res.status(404).send('Itinerary not found');
         }
-        res.status(204).send(); // No content to send back
+        res.json(deletedItinerary);
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -60,6 +46,5 @@ module.exports = {
     getItineraries,
     getItineraryById,
     createItinerary,
-    updateItinerary,
     deleteItinerary
 };
