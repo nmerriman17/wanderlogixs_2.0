@@ -98,6 +98,7 @@ code {
   font-size: 14px;
   line-height: 18px;
   font-weight: 600;
+  margin-top: 30px;
   align-self: center;
   text-transform: uppercase;
   transition: background 0.3s linear, color 0.3s linear;
