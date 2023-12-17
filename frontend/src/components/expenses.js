@@ -87,7 +87,8 @@ const Expenses = () => {
                 <Field name="amount" type="number" className="form-control" />
                 <Field name="description" type="text" className="form-control" />
               </div>
-              <button type="submit" className="btn expense-btn-primary">Submit</button>
+              <button type="submit" className="btn expense-btn-primary submit">Submit</button>
+
             </Form>
           )}
         </Formik>
