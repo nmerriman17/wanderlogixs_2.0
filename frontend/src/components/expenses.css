@@ -99,6 +99,7 @@ code {
   line-height: 18px;
   font-weight: 600;
   margin-top: 30px;
+  align-items: center;
   text-transform: uppercase;
   transition: background 0.3s linear, color 0.3s linear;
 }
