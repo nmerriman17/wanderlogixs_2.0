@@ -36,6 +36,7 @@ const expenseRoutes = require('./src/routes/expenseRoutes.js');
 const itineraryRoutes = require('./src/routes/itineraryRoutes.js');
 const mediaRoutes = require('./src/routes/mediaRoutes.js');
 
+
 // Create express app
 const app = express();
 app.use(express.json());

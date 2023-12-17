@@ -1,21 +1,23 @@
-const pool = require('../config/db'); 
+const { pool } = require('../config/db');
 
-const performSearch = async (searchTerm) => {
+const searchAllTables = async (searchTerm) => {
     try {
         const query = `
-            SELECT * FROM trips WHERE destination ILIKE $1 OR notes ILIKE $1
+            SELECT * FROM trips WHERE LOWER(destination) LIKE LOWER($1)
             UNION ALL
-            SELECT * FROM itinerary WHERE event_name ILIKE $1 OR location ILIKE $1
+            SELECT * FROM expenses WHERE LOWER(description) LIKE LOWER($1)
             UNION ALL
-            SELECT * FROM media WHERE tripname ILIKE $1 OR tags ILIKE $1 OR notes ILIKE $1;
+            SELECT * FROM itinerary WHERE LOWER(eventName) LIKE LOWER($1) OR LOWER(location) LIKE LOWER($1)
+            UNION ALL
+            SELECT * FROM media WHERE LOWER(tags) LIKE LOWER($1) OR LOWER(notes) LIKE LOWER($1);
         `;
-
-        const result = await pool.query(query, [`%${searchTerm}%`]);
+        const values = [`%${searchTerm}%`];
+        const result = await pool.query(query, values);
         return result.rows;
-    } catch (error) {
-        console.error('Error in performSearch:', error);
-        throw error;
+    } catch (err) {
+        console.error('Error in searchAllTables:', err);
+        throw err;
     }
 };
 
-module.exports = { performSearch };
+module.exports = { searchAllTables };

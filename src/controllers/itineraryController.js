@@ -41,15 +41,6 @@ const deleteItinerary = async (req, res) => {
         res.status(500).send(error.message);
     }
 
-    const searchItineraries = async (req, res) => {
-        try {
-            const searchTerm = req.query.term || '';
-            const itineraries = await itineraryModel.searchItineraries(searchTerm);
-            res.json(itineraries);
-        } catch (error) {
-            res.status(500).send(error.message);
-        }
-    };
     
 };
 
@@ -57,7 +48,5 @@ module.exports = {
     getItineraries,
     getItineraryById,
     createItinerary,
-    deleteItinerary,
-    searchItineraries,
-
+    deleteItinerary
 };

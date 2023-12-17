@@ -1,13 +1,14 @@
-const searchModel = require('../models/searchModel.js');
+const searchModel = require('../models/searchModel');
 
-const handleSearch = async (req, res) => {
-    const searchTerm = req.query.term;
+const searchAllData = async (req, res) => {
     try {
-        const results = await searchModel.performSearch(searchTerm);
+        const searchTerm = req.query.term;
+        const results = await searchModel.searchAllTables(searchTerm);
         res.json(results);
     } catch (error) {
-        res.status(500).send('Server error');
+        console.error('Error in searchAllData:', error);
+        res.status(500).send('Internal Server Error');
     }
 };
 
-module.exports = { handleSearch };
+module.exports = { searchAllData };
