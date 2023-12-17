@@ -198,3 +198,8 @@ code {
   height: auto;
   display: block; /* Removes bottom space under the image */
 }
+.form-control {
+padding: 30px;
+margin-left: 30px;
+margin-right: 30px;
+}
