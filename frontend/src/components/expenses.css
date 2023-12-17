@@ -24,7 +24,6 @@ code {
   background: white;
   padding: 60px 30px;
   border-radius: 10px;
-  align-items: center;
   
 }
 
@@ -140,6 +139,7 @@ code {
 .expense-submit-container{
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 20px;
   margin: 40px auto;
   flex-wrap: wrap;
