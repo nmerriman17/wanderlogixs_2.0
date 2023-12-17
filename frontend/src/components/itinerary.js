@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import * as yup from 'yup';
 import AppHeader from '../components/header.js';
 import './itinerary.css';
-
-const itinerarySchema = yup.object().shape({
-    eventName: yup.string().required('Event name is required'),
-    location: yup.string().required('Location is required'),
-    startDate: yup.date().required('Start date is required').nullable(),
-    endDate: yup.date().required('End date is required').nullable(),
-    startTime: yup.string().required('Start time is required'),
-    endTime: yup.string().required('End time is required'),
-    description: yup.string(),
-    notification: yup.string()
-});
 
 function Itinerary() {
     const [events, setEvents] = useState([]);
@@ -31,20 +19,21 @@ function Itinerary() {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        async function fetchEvents() {
-            try {
-                const response = await fetch('/api/itinerary');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-                setEvents(data);
-            } catch (error) {
-                console.error('Error fetching events:', error);
-            }
-        }
         fetchEvents();
     }, []);
+
+    const fetchEvents = async () => {
+        try {
+            const response = await fetch('/api/itinerary', { method: 'GET' });
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setEvents(data);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        }
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -54,11 +43,10 @@ function Itinerary() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const validatedData = await itinerarySchema.validate(eventForm, { abortEarly: false });
             const response = await fetch('/api/itinerary', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(validatedData)
+                body: JSON.stringify(eventForm)
             });
 
             if (!response.ok) {
@@ -77,6 +65,7 @@ function Itinerary() {
     const handleDeleteEvent = async (eventId) => {
         try {
             const response = await fetch(`/api/itinerary/${eventId}`, { method: 'DELETE' });
+
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -98,6 +87,7 @@ function Itinerary() {
             description: '',
             notification: ''
         });
+        setErrors({});
     };
 
     return (
@@ -223,9 +213,8 @@ function Itinerary() {
                 {/* Calendar Component */}
                 <div className="calendar-container">
                     <Calendar
-                        onChange={(date) => setEventForm({ ...eventForm, startDate: date })}
-                        value={new Date(eventForm.startDate)}
-                        tileContent={({ date, view }) => 
+                        value={new Date()}
+                        tileContent={({ date, view }) => (
                             view === 'month' && events.map(event => {
                                 const eventStartDate = new Date(event.startDate);
                                 const eventEndDate = new Date(event.endDate);
@@ -239,7 +228,7 @@ function Itinerary() {
                                 }
                                 return null;
                             })
-                        }
+                        )}
                     />
                 </div>
             </div>
