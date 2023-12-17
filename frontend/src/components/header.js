@@ -15,8 +15,8 @@ export default function AppHeader() {
 
     const handleSearchSubmit = async (event) => {
         event.preventDefault();
-        const apiUrl = `/api/search?searchTerm=${encodeURIComponent(searchTerm)}`;
-
+        const apiUrl = `/api/itinerary/search?term=${encodeURIComponent(searchTerm)}`; // Updated endpoint
+    
         try {
             const response = await fetch(apiUrl, {
                 method: 'GET',
@@ -24,11 +24,11 @@ export default function AppHeader() {
                     'Content-Type': 'application/json',
                 },
             });
-
+    
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
+    
             const data = await response.json();
             setSearchResults(data);
             setShowModal(true);
