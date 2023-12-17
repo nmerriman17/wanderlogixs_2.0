@@ -5,7 +5,6 @@ import * as yup from 'yup';
 import AppHeader from '../components/header.js';
 import './itinerary.css';
 
-// Schema for form validation using yup
 const itinerarySchema = yup.object().shape({
     eventName: yup.string().required('Event name is required'),
     location: yup.string().required('Location is required'),
@@ -19,7 +18,6 @@ const itinerarySchema = yup.object().shape({
 
 function Itinerary() {
     const [events, setEvents] = useState([]);
-    const [editingEventId, setEditingEventId] = useState(null);
     const [eventForm, setEventForm] = useState({
         eventName: '',
         location: '',
@@ -35,7 +33,7 @@ function Itinerary() {
     useEffect(() => {
         async function fetchEvents() {
             try {
-                const response = await fetch('/api/itinerary', { method: 'GET' });
+                const response = await fetch('/api/itinerary');
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -56,33 +54,36 @@ function Itinerary() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await itinerarySchema.validate(eventForm, { abortEarly: false });
-            const method = editingEventId ? 'PUT' : 'POST';
-            const endpoint = editingEventId ? `/api/itinerary/${editingEventId}` : '/api/itinerary';
-
-            const response = await fetch(endpoint, {
-                method,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(eventForm)
+            const validatedData = await itinerarySchema.validate(eventForm, { abortEarly: false });
+            const response = await fetch('/api/itinerary', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(validatedData)
             });
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const updatedEvent = await response.json();
-            if (editingEventId) {
-                setEvents(events.map(event => event.event_id === editingEventId ? updatedEvent : event));
-            } else {
-                setEvents([...events, updatedEvent]);
-            }
-
+            const newEvent = await response.json();
+            setEvents([...events, newEvent]);
             resetForm();
         } catch (error) {
             console.error('Error submitting form:', error);
             setErrors({ form: 'Error submitting form' });
+        }
+    };
+
+    const handleDeleteEvent = async (eventId) => {
+        try {
+            const response = await fetch(`/api/itinerary/${eventId}`, { method: 'DELETE' });
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            setEvents(events.filter(event => event.event_id !== eventId));
+        } catch (error) {
+            console.error('Error deleting event:', error);
         }
     };
 
@@ -97,27 +98,6 @@ function Itinerary() {
             description: '',
             notification: ''
         });
-        setEditingEventId(null);
-        setErrors({});
-    };
-
-    const handleEditEvent = (event) => {
-        setEditingEventId(event.event_id);
-        setEventForm({
-            eventName: event.eventName,
-            location: event.location,
-            startDate: event.startDate,
-            endDate: event.endDate,
-            startTime: event.startTime,
-            endTime: event.endTime,
-            description: event.description,
-            notification: event.notification
-        });
-    };
-
-    const handleDateChange = (date, name) => {
-        const formattedDate = date.toISOString().split('T')[0];
-        setEventForm({ ...eventForm, [name]: formattedDate });
     };
 
     return (
@@ -243,23 +223,23 @@ function Itinerary() {
                 {/* Calendar Component */}
                 <div className="calendar-container">
                     <Calendar
-                        onChange={date => handleDateChange(date, 'startDate')}
-                        value={eventForm.startDate ? new Date(eventForm.startDate) : new Date()}
-                        locale="en-US"
-                        tileContent={({ date, view }) => (
+                        onChange={(date) => setEventForm({ ...eventForm, startDate: date })}
+                        value={new Date(eventForm.startDate)}
+                        tileContent={({ date, view }) => 
                             view === 'month' && events.map(event => {
                                 const eventStartDate = new Date(event.startDate);
                                 const eventEndDate = new Date(event.endDate);
                                 if (date >= eventStartDate && date <= eventEndDate) {
                                     return (
-                                        <div key={event.event_id} onClick={() => handleEditEvent(event)}>
-                                            {event.eventName}
+                                        <div key={event.event_id} className="calendar-event">
+                                            <span>{event.eventName}</span>
+                                            <button onClick={() => handleDeleteEvent(event.event_id)}>Delete</button>
                                         </div>
                                     );
                                 }
                                 return null;
                             })
-                        )}
+                        }
                     />
                 </div>
             </div>
