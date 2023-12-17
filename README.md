@@ -40,16 +40,6 @@ Technologies Used:
 Frontend: HTML, CSS, JavaScript
 Backend: Node.js, Express.js
 Database: PostgreSQL
-Authentication: JWT (JSON Web Tokens)
-Getting Started:
-Clone the repository: git clone [https://github.com/nmerriman17/WanderLogixs.git]
-Navigate to the project directory: cd wanderlogixs
-Install dependencies: npm install
-Set up the backend: Refer to the backend README for instructions.
-Start the application: npm start
-Access the application in your browser: http://localhost:3003
-Contribution Guidelines:
-If you'd like to contribute to WanderLogixs, please follow our Contribution Guidelines.
 
 License:
 This project is licensed under the MIT License.
