@@ -15,7 +15,7 @@ export default function AppHeader() {
 
     const handleSearchSubmit = async (event) => {
         event.preventDefault();
-        const apiUrl = `/api/itinerary/search?term=${encodeURIComponent(searchTerm)}`;
+        const apiUrl = `/api/search?searchTerm=${encodeURIComponent(searchTerm)}`;
 
         try {
             const response = await fetch(apiUrl, {

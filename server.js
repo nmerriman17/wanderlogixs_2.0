@@ -2,6 +2,11 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const { Pool } = require('pg');
+const tripRoutes = require('./src/routes/tripRoutes.js');
+const expenseRoutes = require('./src/routes/expenseRoutes.js');
+const itineraryRoutes = require('./src/routes/itineraryRoutes.js');
+const mediaRoutes = require('./src/routes/mediaRoutes.js');
+const searchRoutes = require('./src/routes/searchRoutes.js');
 require('dotenv').config();
 
 // Database connection setup
@@ -29,12 +34,6 @@ pool.connect()
     .then(() => console.log('Connected to database successfully'))
     .catch(err => console.error('Failed to connect to the database', err));
 
-// Import route handlers
-const searchRoutes = require('./src/routes/searchRoutes.js');
-const tripRoutes = require('./src/routes/tripRoutes.js');
-const expenseRoutes = require('./src/routes/expenseRoutes.js');
-const itineraryRoutes = require('./src/routes/itineraryRoutes.js');
-const mediaRoutes = require('./src/routes/mediaRoutes.js');
 
 
 // Create express app
@@ -43,11 +42,12 @@ app.use(express.json());
 app.use(cors());
 
 // API Routes
-app.use('/api/search', searchRoutes);
 app.use('/api/trips', tripRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/itinerary', itineraryRoutes);
 app.use('/api/media', mediaRoutes);
+app.use('/api/search', searchRoutes);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
