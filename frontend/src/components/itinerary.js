@@ -9,10 +9,10 @@ function Itinerary() {
     const [eventForm, setEventForm] = useState({
         eventName: '',
         location: '',
-        startDate: '',
-        endDate: '',
-        startTime: '12:00',
-        endTime: '12:00',
+        startDate: '', // Use ISO date format (YYYY-MM-DD)
+        endDate: '',   // Use ISO date format (YYYY-MM-DD)
+        startTime: '', // Use 24-hour time format (HH:MM)
+        endTime: '',   // Use 24-hour time format (HH:MM)
         description: '',
         notification: ''
     });
@@ -82,8 +82,8 @@ function Itinerary() {
             location: '',
             startDate: '',
             endDate: '',
-            startTime: '12:00',
-            endTime: '12:00',
+            startTime: '',
+            endTime: '',
             description: '',
             notification: ''
         });
@@ -133,7 +133,7 @@ function Itinerary() {
                                 name="startDate"
                                 value={eventForm.startDate}
                                 onChange={handleInputChange}
-                                placeholder="Start Date"
+                                placeholder="Start Date (YYYY-MM-DD)"
                             />
                             {errors.startDate && <div className="error">{errors.startDate}</div>}
                         </div>
@@ -143,7 +143,7 @@ function Itinerary() {
                                 name="startTime"
                                 value={eventForm.startTime}
                                 onChange={handleInputChange}
-                                placeholder="Start Time"
+                                placeholder="Start Time (HH:MM)"
                             />
                             {errors.startTime && <div className="error">{errors.startTime}</div>}
                         </div>
@@ -156,7 +156,7 @@ function Itinerary() {
                                 name="endDate"
                                 value={eventForm.endDate}
                                 onChange={handleInputChange}
-                                placeholder="End Date"
+                                placeholder="End Date (YYYY-MM-DD)"
                             />
                             {errors.endDate && <div className="error">{errors.endDate}</div>}
                         </div>
@@ -166,7 +166,7 @@ function Itinerary() {
                                 name="endTime"
                                 value={eventForm.endTime}
                                 onChange={handleInputChange}
-                                placeholder="End Time"
+                                placeholder="End Time (HH:MM)"
                             />
                             {errors.endTime && <div className="error">{errors.endTime}</div>}
                         </div>
