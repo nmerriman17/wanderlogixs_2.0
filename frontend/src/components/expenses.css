@@ -74,14 +74,14 @@ code {
 }
 
 .input input{
-  height: 50px;
-  width: 600px;
+  flex-grow: 1;
+  height: 100%;
   background: transparent;
   border: none;
   outline: none;
   color: #797979;
-  font-size: 19px;
-  height: 60px; /* Adjusted height */
+  font-size: 16px;
+  padding: 0 15px;
 
 }
 
@@ -98,8 +98,8 @@ code {
   font-size: 14px;
   line-height: 18px;
   font-weight: 600;
+  align-self: center;
   text-transform: uppercase;
-  align-self: center; /* Centers the button */
   transition: background 0.3s linear, color 0.3s linear;
   -webkit-transition: background 0.3s linear, color 0.3s linear;
 }
