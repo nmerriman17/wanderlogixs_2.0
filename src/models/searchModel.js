@@ -1,21 +1,17 @@
 const { pool } = require('../config/db');
 
-const searchAllTables = async (searchTerm) => {
+const searchAllTables = async (term) => {
     try {
         const query = `
             SELECT * FROM trips WHERE name LIKE $1
             UNION
             SELECT * FROM expenses WHERE description LIKE $1
             UNION
-            SELECT * FROM itinerary 
-            WHERE eventName LIKE $1 OR 
-                  location LIKE $1 OR
-                  description LIKE $1 OR
-                  notification LIKE $1
+            SELECT * FROM itinerary WHERE eventName LIKE $1 OR location LIKE $1 OR description LIKE $1 OR notification LIKE $1
             UNION
             SELECT * FROM media WHERE title LIKE $1
         `;
-        const values = [`%${searchTerm}%`];
+        const values = [`%${term}%`];
 
         const result = await pool.query(query, values);
         return result.rows;

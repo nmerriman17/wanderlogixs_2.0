@@ -24,7 +24,7 @@ function Itinerary() {
 
     const fetchEvents = async () => {
         try {
-            const response = await fetch('/api/itinerary');
+            const response = await fetch('/api/itinerary', { method: 'GET' });
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -48,33 +48,34 @@ function Itinerary() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(eventForm)
             });
-
+    
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
+    
             const newEvent = await response.json();
-            setEvents(prev => [...prev, newEvent]);
+            setEvents([...events, newEvent]);
             resetForm();
         } catch (error) {
             console.error('Error submitting form:', error);
             setErrors({ form: 'Error submitting form' });
         }
     };
-
-    const handleDeleteEvent = async (eventId) => {
+    
+    const handleDeleteEvent = async (event_id) => {
         try {
-            const response = await fetch(`/api/itinerary/${eventId}`, { method: 'DELETE' });
-
+            const response = await fetch(`/api/itinerary/${event_id}`, { method: 'DELETE' });
+    
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
-            setEvents(prev => prev.filter(event => event.event_id !== eventId));
+    
+            setEvents(events.filter(event => event.event_id !== event_id));
         } catch (error) {
             console.error('Error deleting event:', error);
         }
     };
+    
 
     const resetForm = () => {
         setEventForm({

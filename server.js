@@ -1,67 +1,27 @@
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
-const { Pool } = require('pg');
-const tripRoutes = require('./src/routes/tripRoutes.js');
-const expenseRoutes = require('./src/routes/expenseRoutes.js');
-const itineraryRoutes = require('./src/routes/itineraryRoutes.js');
-const mediaRoutes = require('./src/routes/mediaRoutes.js');
-const searchRoutes = require('./src/routes/searchRoutes.js');
-require('dotenv').config();
-
-// Database connection setup
-let poolConfig = {};
-
-if (process.env.NODE_ENV === 'production') {
-    poolConfig = {
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false }
-    };
-} else {
-    poolConfig = {
-        user: process.env.DB_USER,
-        host: process.env.DB_HOST,
-        database: process.env.DB_NAME,
-        password: process.env.DB_PASS,
-        port: process.env.DB_PORT
-    };
-}
-
-const pool = new Pool(poolConfig);
-
-// Verify database connection
-pool.connect()
-    .then(() => console.log('Connected to database successfully'))
-    .catch(err => console.error('Failed to connect to the database', err));
-
-
-
-// Create express app
+const itineraryRoutes = require('./routes/itineraryRoutes');
+const searchRoutes = require('./routes/searchRoutes');
 const app = express();
-app.use(express.json());
-app.use(cors());
 
-// API Routes
-app.use('/api/trips', tripRoutes);
-app.use('/api/expenses', expenseRoutes);
+app.use(cors());
+app.use(express.json());
+
+// Using Itinerary and Search Routes
 app.use('/api/itinerary', itineraryRoutes);
-app.use('/api/media', mediaRoutes);
 app.use('/api/search', searchRoutes);
 
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
-});
-
-// Serve static files from the React frontend app's build directory
-app.use(express.static(path.join(__dirname, 'build')));
-
-// Handles any requests that don't match the ones above (place this after API routes)
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
+// Database connection test
+const { pool } = require('./config/db');
+pool.query('SELECT NOW()', (err, res) => {
+    if (err) {
+        console.error('Database connection error:', err);
+    } else {
+        console.log('Database connected:', res.rows[0].now);
+    }
+});

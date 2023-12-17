@@ -11,22 +11,11 @@ const getItineraryById = async (event_id) => {
 };
 
 const addItinerary = async (itineraryData) => {
-    const {
-        eventName,
-        location,
-        startDate,
-        endDate,
-        startTime,
-        endTime,
-        description,
-        notification
-    } = itineraryData;
-    
+    const { eventName, location, startDate, endDate, startTime, endTime, description, notification } = itineraryData;
     const result = await pool.query(
         'INSERT INTO itinerary (eventName, location, startDate, endDate, startTime, endTime, description, notification) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
         [eventName, location, startDate, endDate, startTime, endTime, description, notification]
     );
-
     return result.rows[0];
 };
 
