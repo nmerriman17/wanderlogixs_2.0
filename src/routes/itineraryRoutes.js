@@ -6,5 +6,6 @@ router.get('/', itineraryController.getItineraries);
 router.get('/:event_id', itineraryController.getItineraryById);
 router.post('/', itineraryController.createItinerary);
 router.delete('/:event_id', itineraryController.deleteItinerary);
+router.get('/search', itineraryController.searchItineraries);
 
 module.exports = router;

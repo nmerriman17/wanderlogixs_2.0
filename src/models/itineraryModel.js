@@ -24,9 +24,24 @@ const deleteItinerary = async (event_id) => {
     return result.rows[0];
 };
 
+const searchItineraries = async (searchTerm) => {
+    const query = `
+        SELECT * FROM itinerary
+        WHERE eventName ILIKE $1
+        OR location ILIKE $1
+        OR description ILIKE $1;
+    `;
+    const values = [`%${searchTerm}%`];
+    const result = await pool.query(query, values);
+    return result.rows;
+};
+
+
 module.exports = {
     getAllItineraries,
     getItineraryById,
     addItinerary,
-    deleteItinerary
+    deleteItinerary,
+    searchItineraries,
+
 };

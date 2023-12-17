@@ -15,7 +15,7 @@ export default function AppHeader() {
 
     const handleSearchSubmit = async (event) => {
         event.preventDefault();
-        const apiUrl = `/api/itinerary/search?term=${encodeURIComponent(searchTerm)}`;
+        const apiUrl = `${process.env.REACT_APP_API_URL}/api/search?term=${encodeURIComponent(searchTerm)}`;
 
         try {
             const response = await fetch(apiUrl, {
@@ -47,7 +47,7 @@ export default function AppHeader() {
                     <Navbar.Brand className="d-flex align-items-center header-light-blue-logo text">
                         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
                             <img src={logoImage} alt="Logo" style={{ maxWidth: '100px', marginRight: '10px' }} />
-                            <div className="brand-name">WanderLogixs</div>
+                            <div class="brand-name">WanderLogixs</div>
                         </Link>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -82,7 +82,7 @@ export default function AppHeader() {
                     {searchResults.length > 0 ? (
                         <ul>
                             {searchResults.map(result => (
-                                <li key={result.event_id}>{result.eventName} at {result.location}</li>
+                                <li key={result.id}>{result.name}</li>
                             ))}
                         </ul>
                     ) : <p>No results found.</p>}
