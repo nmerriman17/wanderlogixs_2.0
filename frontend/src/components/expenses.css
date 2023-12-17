@@ -167,7 +167,7 @@ code {
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-  padding: 20px;
+  padding: 30px;
   
 }
 
@@ -197,9 +197,4 @@ code {
   width: 100%;
   height: auto;
   display: block; /* Removes bottom space under the image */
-}
-.form-control {
-padding: 30px;
-margin-left: 30px;
-margin-right: 30px;
 }
