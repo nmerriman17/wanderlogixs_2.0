@@ -112,8 +112,8 @@ const Media = () => {
                       </div>
                     </div>
                     <div className="media-submit-container">
-                      <button type="submit" className="btn media-btn-primary submit">Submit</button>
-                      <button type="button" className="btn media-btn-secondary submit" onClick={() => formikRef.current?.resetForm()}>
+                      <button type="submit" className="btn itinerary-btn-primary submit">Submit</button>
+                      <button type="button" className="btn itinerary-btn-secondary submit" onClick={() => formikRef.current?.resetForm()}>
                         Cancel
                       </button>
                     </div>

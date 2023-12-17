@@ -115,13 +115,12 @@ body {
   }
   
   .btn.media-btn-secondary {
-    background: #2E454E; /* Blue color */
-    border-color: #2E454E; /* Blue color for border */
+    background: #2E454E;
+    border-color: #2E454E;
     padding: 13px 35px;
     width: 180px;
     font-size: 14px;
     line-height: 18px;
-    margin-bottom: 35px;
     font-weight: 600;
     text-transform: uppercase;
     transition: background 0.3s linear, color 0.3s linear;
