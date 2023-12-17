@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const itineraryRoutes = require('./routes/itineraryRoutes');
+const itineraryRoutes = require('./src/routes/itineraryRoutes.js');
 require('dotenv').config();
 
 const app = express();
