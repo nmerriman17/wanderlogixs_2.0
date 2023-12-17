@@ -1,8 +1,8 @@
 const searchModel = require('../models/searchModel');
 
-const search = async (req, res) => {
+const searchAll = async (req, res) => {
     try {
-        const searchTerm = req.query.searchTerm;
+        const searchTerm = req.query.term;
         const results = await searchModel.searchAllTables(searchTerm);
         res.json(results);
     } catch (error) {
@@ -11,5 +11,5 @@ const search = async (req, res) => {
 };
 
 module.exports = {
-    search
+    searchAll
 };

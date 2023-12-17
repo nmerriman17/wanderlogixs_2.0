@@ -15,8 +15,8 @@ export default function AppHeader() {
 
     const handleSearchSubmit = async (event) => {
         event.preventDefault();
-        const apiUrl = `/api/itinerary/search?term=${encodeURIComponent(searchTerm)}`; // Updated endpoint
-    
+        const apiUrl = `/api/search?term=${encodeURIComponent(searchTerm)}`;
+
         try {
             const response = await fetch(apiUrl, {
                 method: 'GET',
@@ -24,11 +24,11 @@ export default function AppHeader() {
                     'Content-Type': 'application/json',
                 },
             });
-    
+
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-    
+
             const data = await response.json();
             setSearchResults(data);
             setShowModal(true);
@@ -82,7 +82,7 @@ export default function AppHeader() {
                     {searchResults.length > 0 ? (
                         <ul>
                             {searchResults.map(result => (
-                                <li key={result.event_id}>{result.eventName} at {result.location}</li>
+                                <li key={result.id}>{result.name}</li>
                             ))}
                         </ul>
                     ) : <p>No results found.</p>}

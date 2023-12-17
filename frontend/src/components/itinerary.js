@@ -9,10 +9,10 @@ function Itinerary() {
     const [eventForm, setEventForm] = useState({
         eventName: '',
         location: '',
-        startDate: '', // Use ISO date format (YYYY-MM-DD)
-        endDate: '',   // Use ISO date format (YYYY-MM-DD)
-        startTime: '', // Use 24-hour time format (HH:MM)
-        endTime: '',   // Use 24-hour time format (HH:MM)
+        startDate: '',
+        endDate: '',
+        startTime: '',
+        endTime: '',
         description: '',
         notification: ''
     });
@@ -24,7 +24,7 @@ function Itinerary() {
 
     const fetchEvents = async () => {
         try {
-            const response = await fetch('/api/itinerary', { method: 'GET' });
+            const response = await fetch('/api/itinerary');
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -37,7 +37,7 @@ function Itinerary() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setEventForm({ ...eventForm, [name]: value });
+        setEventForm(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async (e) => {
@@ -54,7 +54,7 @@ function Itinerary() {
             }
 
             const newEvent = await response.json();
-            setEvents([...events, newEvent]);
+            setEvents(prev => [...prev, newEvent]);
             resetForm();
         } catch (error) {
             console.error('Error submitting form:', error);
@@ -70,7 +70,7 @@ function Itinerary() {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            setEvents(events.filter(event => event.event_id !== eventId));
+            setEvents(prev => prev.filter(event => event.event_id !== eventId));
         } catch (error) {
             console.error('Error deleting event:', error);
         }
