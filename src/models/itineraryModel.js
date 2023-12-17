@@ -19,6 +19,8 @@ const addItinerary = async (itineraryData) => {
     return result.rows[0];
 };
 
+
+
 const updateItinerary = async (event_id, itineraryData) => {
     const { eventName, location, startDate, endDate, startTime, endTime, description, notification } = itineraryData;
     const result = await pool.query(

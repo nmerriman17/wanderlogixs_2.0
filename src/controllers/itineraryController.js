@@ -23,9 +23,11 @@ const getItineraryById = async (req, res) => {
 
 const createItinerary = async (req, res) => {
     try {
+        console.log('Creating Itinerary:', req.body);
         const newItinerary = await itineraryModel.addItinerary(req.body);
         res.status(201).json(newItinerary);
     } catch (error) {
+        console.error('Error creating itinerary:', error);
         res.status(500).send(error.message);
     }
 };
