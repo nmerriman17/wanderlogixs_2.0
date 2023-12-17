@@ -19,6 +19,15 @@ const addItinerary = async (itineraryData) => {
     return result.rows[0];
 };
 
+const updateItinerary = async (event_id, itineraryData) => {
+    const { eventName, location, startDate, endDate, startTime, endTime, description, notification } = itineraryData;
+    const result = await pool.query(
+        'UPDATE itinerary SET eventName = $1, location = $2, startDate = $3, endDate = $4, startTime = $5, endTime = $6, description = $7, notification = $8 WHERE event_id = $9 RETURNING *',
+        [eventName, location, startDate, endDate, startTime, endTime, description, notification, event_id]
+    );
+    return result.rows[0];
+};
+
 const deleteItinerary = async (event_id) => {
     const result = await pool.query('DELETE FROM itinerary WHERE event_id = $1 RETURNING *', [event_id]);
     return result.rows[0];
@@ -28,5 +37,6 @@ module.exports = {
     getAllItineraries,
     getItineraryById,
     addItinerary,
+    updateItinerary,
     deleteItinerary
 };

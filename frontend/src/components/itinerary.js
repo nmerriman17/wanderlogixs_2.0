@@ -17,6 +17,7 @@ function Itinerary() {
         notification: ''
     });
     const [errors, setErrors] = useState({});
+    const [editingEventId, setEditingEventId] = useState(null);
 
     useEffect(() => {
         fetchEvents();
@@ -42,9 +43,12 @@ function Itinerary() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const url = editingEventId ? `/api/itinerary/${editingEventId}` : '/api/itinerary';
+        const method = editingEventId ? 'PUT' : 'POST';
+        
         try {
-            const response = await fetch('/api/itinerary', {
-                method: 'POST',
+            const response = await fetch(url, {
+                method: method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(eventForm)
             });
@@ -54,14 +58,23 @@ function Itinerary() {
             }
     
             const newEvent = await response.json();
-            setEvents([...events, newEvent]);
+            if (editingEventId) {
+                setEvents(events.map(event => event.event_id === editingEventId ? newEvent : event));
+            } else {
+                setEvents([...events, newEvent]);
+            }
             resetForm();
         } catch (error) {
             console.error('Error submitting form:', error);
             setErrors({ form: 'Error submitting form' });
         }
     };
-    
+
+    const handleEditEvent = (event) => {
+        setEditingEventId(event.event_id);
+        setEventForm(event);
+    };
+
     const handleDeleteEvent = async (event_id) => {
         try {
             const response = await fetch(`/api/itinerary/${event_id}`, { method: 'DELETE' });
@@ -75,7 +88,6 @@ function Itinerary() {
             console.error('Error deleting event:', error);
         }
     };
-    
 
     const resetForm = () => {
         setEventForm({
@@ -88,6 +100,7 @@ function Itinerary() {
             description: '',
             notification: ''
         });
+        setEditingEventId(null);
         setErrors({});
     };
 
@@ -223,6 +236,7 @@ function Itinerary() {
                                     return (
                                         <div key={event.event_id} className="calendar-event">
                                             <span>{event.eventName}</span>
+                                            <button onClick={() => handleEditEvent(event)}>Edit</button>
                                             <button onClick={() => handleDeleteEvent(event.event_id)}>Delete</button>
                                         </div>
                                     );

@@ -30,6 +30,18 @@ const createItinerary = async (req, res) => {
     }
 };
 
+const updateItinerary = async (req, res) => {
+    try {
+        const updatedItinerary = await itineraryModel.updateItinerary(req.params.event_id, req.body);
+        if (!updatedItinerary) {
+            return res.status(404).send('Itinerary not found');
+        }
+        res.json(updatedItinerary);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
 const deleteItinerary = async (req, res) => {
     try {
         const deletedItinerary = await itineraryModel.deleteItinerary(req.params.event_id);
@@ -46,5 +58,6 @@ module.exports = {
     getItineraries,
     getItineraryById,
     createItinerary,
+    updateItinerary,
     deleteItinerary
 };
