@@ -57,7 +57,7 @@ export default function AppHeader() {
                             <Nav.Link as={Link} to="/trips">Trips</Nav.Link>
                             <Nav.Link as={Link} to="/expenses">Expenses</Nav.Link>
                             <Nav.Link as={Link} to="/itinerary">Itinerary</Nav.Link>
-                            <Nav.Link as={Link} to="/media">Media</Nav.Link>
+                            <Nav.Link as={Link} to="/media" style={{ marginRight: '20px' }}>Media</Nav.Link>
                         </Nav>
                         <Form className="d-flex ms-auto" onSubmit={handleSearchSubmit}>
                             <Form.Control
